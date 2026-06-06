@@ -37,7 +37,9 @@ FLUSH PRIVILEGES;
 结束mysql：
 \q
 
-3.创建学习用数据库：
+3.创建学习用数据库并且使用：
 CREATE DATABASE shop;
 
-4.直接登录学习用数据库shop：
+直接登录学习用数据库shop：
+未登录mysql时在cmd内输入：mysql -u root -p shop;
+如果已经登录用于切换数据库：use shop;
