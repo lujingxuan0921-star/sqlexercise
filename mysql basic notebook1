@@ -1,0 +1,43 @@
+1.mysql安装阶段的notebook
+数据库默认端口号：
+  MySQL 默认是 3306
+  SQL Server 默认是 1433
+  Oracle 默认是 1521
+  Redis 默认是 6379
+
+为什么端口号是默认的：
+  为了方便后端和数据库管理工具在连接数据库时能够快速找到这个数据库
+
+什么时候需要修改：
+  当电脑上出现第二个mysql的时候需要修改；防止黑客扫描到这个数据库，被破解，需要改成冷门端口号
+
+修改配置文件限定可以连接的IP地址：
+  Win+R找到“运行”窗口，输入“C:\ProgramData\MySQL\MySQL Server 8.0”进入找到my.ini文件修改；
+  以管理员权限用记事本打开my.ini，打开后，按下 Ctrl + F 快捷键，搜索 bind-address，搜索bind-addressed,
+  如果没有搜到，可以在 [mysqld] 这一行的下方，自己手动添加一行 bind-address=0.0.0.0
+
+各种bind-address的类型：
+  默认值：127.0.0.1（最安全，仅限本地）
+  修改为：0.0.0.0（完全开放，远程连接）
+  修改为特定的内网 IP（如 192.168.1.50）
+
+修改后还需要在mysql内修改用户权限：
+-- 允许 root 用户从任意 IP (%) 进行连接
+ALTER USER 'root'@'localhost' IDENTIFIED BY '你的密码'; -- 先确保有密码
+-- 或者创建一个允许远程访问的新用户
+CREATE USER 'myuser'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%';
+FLUSH PRIVILEGES;
+
+2.mysql的启动和退出：
+在cmd内启动mysql：
+  没有配置环境变量时，在cmd内输入：cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+  mysql -u root -p
+  输入后会要求进一步输入密码
+结束mysql：
+\q
+
+3.创建学习用数据库：
+CREATE DATABASE shop;
+
+4.直接登录学习用数据库shop：
