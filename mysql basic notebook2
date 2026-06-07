@@ -103,8 +103,12 @@ JSON类型（现代数据库标配）：
 查看某张表单的数据类型：
 DESC Product;
 SHOW COLUMNS FROM Product;
-SHOW CREATE TABLE Product\G;（馋看创建Product这张表时所使用的语句）
+SHOW CREATE TABLE Product\G;（查看创建Product这张表时所使用的语句）
 
 4.创建删除和改变表单：
-  删除表单：DROP TABLE Product;
+  删除表单：DROP TABLE Product;（如果误删，可以运行备份文件mysql -u root -p shop < C:\backup\shop_backup.sql；
+  可以查看Binlog是否开启，SHOW VARIABLES LIKE 'log_bin'; -- 如果显示 ON，说明你命不该绝，
+  如果开启，SHOW MASTER STATUS; -- 查看当前正在写入的 binlog 文件名（如 DESKTOP-2JV12RE-bin.000027），查看当前binlog文件名称，
+  mysqlbinlog --start-datetime="2026-06-07 00:00:00" --stop-datetime="2026-06-07 14:29:00" --database=shop "C:\ProgramData\MySQL\MySQL Server 8.0\Data\ DESKTOP-2JV12RE-bin.000027" | mysql -u root -p，
+  使用mysqlbinlog工具恢复6月7日零点至下午两点三十之前的操作步骤）
 
