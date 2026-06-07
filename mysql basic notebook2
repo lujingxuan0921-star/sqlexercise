@@ -6,4 +6,31 @@ DBMS的运作流程：
   DBMS 接收并处理： DBMS 接收到你的请求，检查你的权限，翻译你的 SQL 语句，寻找最快的查找路径（优化器）；
   操作系统与存储： DBMS 帮你去硬盘里把对应的数据取出来，再整整齐齐地返回给你
 
+DBMS的种类：
+  HDB（层次数据库）；RDBMS（关系型数据库）；OODB（面向对象数据库）；XML数据库；键值存储系统
+
+2.RDBMS的结构：
+  客户端/服务器结构：客户端向服务器发送SQL语句，服务器在数据库内调取数据发送回数据
+
+表的结构：
+  二维：列为字段，行为记录，必须以行为单位进行读写
+
+3.SQL语句的种类：
+  DDL语句：CREATE;DROP;ALTER（针对数据库和表）
+  DML语句：SELECT;INSERT;UPDATE;DELETE（针对表内的内容）
+  DCL语句：COMMIT（确认对数据的操作）;ROLLBACK（取消对数据的操作）;GRANT（赋予权限）;REVOKE（取消权限）
+
+具体SQL语句：
+  创建database：CREATE DATABASE shop;
+  创建tables：
+  CREATE TABLE Product
+  (product_id CHAR(4) NOT NULL,
+  product_name VARCHAR(100) NOT NULL,
+  product_type VARCHAR(32) NOT NULL,
+  sale_price INTEGER ,
+  purchase_price INTEGER ,
+  regist_date DATE ,
+  PRIMARY KEY (product_id));
+
+数据类型：
 
