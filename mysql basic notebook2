@@ -91,5 +91,19 @@ DATETIME：
 TIMESTAMP（时间戳）：
 特点： 包含日期和时间，但它带有时区属性。如果换个时区看这行数据，时间会自动转换。范围较小（1970年到2038年）。
 举例： 数据的创建时间、最后修改时间（常用于系统自动记录）。如 create_time = CURRENT_TIMESTAMP。
-数据类型：
+
+BOOLEAN / BOOL：
+特点： 只有两个值：真（True）或假（False）。在 MySQL 底层通常用 TINYINT 的 1 和 0 来代替。
+举例： 是否删除、是否会员。如 is_vip = true。
+
+JSON类型（现代数据库标配）：
+特点： 可以在关系型数据库的一个格子里面，直接塞进一个结构复杂的 JSON 字符串，并且支持直接对 JSON 内部的属性建立索引和查询（吸取了 NoSQL 的优点）。
+举例： 商品的非标准扩展属性（如衣服的尺码、颜色组合）。
+
+查看某张表单的数据类型：
+DESC Product;
+SHOW COLUMNS FROM Product;
+SHOW CREATE TABLE Product\G;（馋看创建Product这张表时所使用的语句）
+
+
 
