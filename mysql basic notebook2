@@ -105,5 +105,6 @@ DESC Product;
 SHOW COLUMNS FROM Product;
 SHOW CREATE TABLE Product\G;（馋看创建Product这张表时所使用的语句）
 
-
+4.创建删除和改变表单：
+  删除表单：DROP TABLE Product;
 
