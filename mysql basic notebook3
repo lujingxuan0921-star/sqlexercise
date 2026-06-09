@@ -53,9 +53,68 @@ WHERE sale_price = 500;
 
 算术运算符通常出现在WHERE子句
 比较运算符通常出现在SELECT子句中（SELECT product_name, (sale_price - purchase_price) AS profit FROM Product;）
+
 比较运算符通常出现在WHERE子句中（SELECT * FROM Product WHERE (sale_price - purchase_price) < 100;）
+
 WHERE子句中除了比较运算符还可以使用：
 IS NULL / IS NOT NULL： 专门用来判断是不是空值（注意：绝对不能写成 = NULL）：SELECT * FROM Product WHERE purchase_price IS NULL; -- 找出没有进价的商品
+
 BETWEEN ... AND ...： 闭区间范围判断（包含边界）：SELECT * FROM Product WHERE sale_price BETWEEN 500 AND 1000; -- 500到1000元之间
+
 IN (...)： 离散值的枚举判断（属于其中任意一个就行）：SELECT * FROM Product WHERE product_type IN ('衣服', '办公用品');
+
 LIKE： 模糊查询，通常配合通配符 %（代表任意个字符）或 _（代表单个字符）：SELECT * FROM Product WHERE product_name LIKE '%T恤%'; -- 名字里包含“T恤”的
+
+WHERE子句中不能出现的运算符：
+SUM(), AVG(), COUNT(), MAX(), MIN()（WHERE 是在数据分组聚集之前进行一行行筛选的，而 SUM 等函数需要等数据全部找齐了才能计算）
+
+=（MySQL 的变量赋值符）或连续比较如 100 < sale_price < 500
+
+在 WHERE 后面使用你在 SELECT 里刚刚定义的中文或英文别名，MySQL 执行一条语句的顺序是：先执行 FROM -> 再执行 WHERE 筛选 -> 最后才执行 SELECT 吐出结果
+
+如果碰到为NULL的记录：
+-- 如果 purchase_price 是 NULL，就把它当做 0 来计算
+SELECT product_name, 
+       sale_price - COALESCE(purchase_price, 0) AS profit 
+FROM Product;
+
+-- 如果 purchase_price 是 NULL，就用 0 替代它
+SELECT product_name, 
+       sale_price - IFNULL(purchase_price, 0) AS profit 
+FROM Product;
+
+SELECT product_name,
+       CASE 
+           WHEN purchase_price IS NULL THEN sale_price * 0.5  -- 如果是NULL，利润算一半
+           ELSE sale_price - purchase_price                  -- 如果不是NULL，正常相减
+       END AS profit
+FROM Product;
+
+CREATE TABLE Product (
+    product_id CHAR(4) NOT NULL,
+    product_name VARCHAR(100) NOT NULL,
+    sale_price DECIMAL(10,2) NOT NULL DEFAULT 0.00,    -- 绝不允许为空，不填就默认为0.00
+    purchase_price DECIMAL(10,2) NOT NULL DEFAULT 0.00 -- 这样后续运算永远不会遇到 NULL 干扰
+);
+
+NOT运算符用来否定某一条件
+AND 运算符在其两侧的查询条件都成立时整个查询条件才成立，其意思相当于“并且”
+OR 运算符在其两侧的查询条件有一个成立时整个查询条件都成立，其意思相当于“或者”
+
+SELECT product_name, purchase_price 
+FROM Product 
+WHERE product_type = '厨房用具' 
+AND sale_price >= 3000;
+
+SELECT product_name, purchase_price 
+FROM Product 
+WHERE product_type = '厨房用具' 
+OR sale_price >= 3000;
+
+SELECT product_name, product_type, regist_date 
+FROM Product 
+WHERE product_type = '办公用品' 
+AND ( regist_date = '2009-09-11' 
+OR regist_date = '2009-09-20');
+
+AND 运算符两侧的真值都为真时返回真，除此之外都返回假。OR 运算符两侧的真值只要有一个不为假就返回真，只有当其两侧的真值都为假时才返回假。NOT运算符只是单纯的将真转换为假，将假转换为真。
