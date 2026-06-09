@@ -1,0 +1,61 @@
+1.SELECT语句：
+查询指定列：SELECT product_id, product_name, purchase_price FROM Product;
+查询所有列：SELECT * FROM Product;
+为列设定其他名称：
+SELECT product_id AS id,
+  product_name AS name,
+  purchase_price AS price 
+FROM Product;
+查询常数：
+SELECT '商品' AS string, 38 AS number, '2009-02-24' AS date,
+  product_id, product_name 
+FROM Product;
+查询时去重：
+SELECT DISTINCT product_type 
+FROM Product;
+DISTINCT语句只能用在一个字段前，可以对多字段进行去重：
+SELECT DISTINCT product_type, regist_date 
+FROM Product;
+
+2.WHERE语句：
+SELECT product_name, product_type 
+FROM Product 
+WHERE product_type = '衣服';
+
+3.mysql中添加注释的方式：
+单行注释：-- 注释内容
+单行注释：# 注释内容
+多行/块注释：/* 注释内容 */
+永久注释（在创建表时就设定）：
+CREATE TABLE Product (
+    product_id CHAR(4) NOT NULL COMMENT '商品唯一编号',
+    product_name VARCHAR(100) NOT NULL COMMENT '商品名称',
+    sale_price DECIMAL(10,2) COMMENT '零售价格',
+    purchase_price DECIMAL(10,2) COMMENT '进货成本价'
+) COMMENT='商品信息核心表'; -- 结尾这里是给整张表加注释
+
+用这种方式可以查看注释：SHOW FULL COLUMNS FROM Product;
+
+-- 修改字段注释（注意：需要把该字段的类型完整重写一遍）
+ALTER TABLE Product MODIFY COLUMN sale_price DECIMAL(10,2) COMMENT '调整后的售价';
+
+-- 修改整张表的注释
+ALTER TABLE Product COMMENT = '新的商品表备注说明';
+
+3.算术运算符
+SELECT product_name, sale_price,
+sale_price * 2 AS "sale_price_x2" 
+FROM Product;
+
+SELECT product_name, product_type 
+FROM Product 
+WHERE sale_price = 500;
+
+算术运算符通常出现在WHERE子句
+比较运算符通常出现在SELECT子句中（SELECT product_name, (sale_price - purchase_price) AS profit FROM Product;）
+比较运算符通常出现在WHERE子句中（SELECT * FROM Product WHERE (sale_price - purchase_price) < 100;）
+WHERE子句中除了比较运算符还可以使用：
+IS NULL / IS NOT NULL： 专门用来判断是不是空值（注意：绝对不能写成 = NULL）：SELECT * FROM Product WHERE purchase_price IS NULL; -- 找出没有进价的商品
+BETWEEN ... AND ...： 闭区间范围判断（包含边界）：SELECT * FROM Product WHERE sale_price BETWEEN 500 AND 1000; -- 500到1000元之间
+IN (...)： 离散值的枚举判断（属于其中任意一个就行）：SELECT * FROM Product WHERE product_type IN ('衣服', '办公用品');
+LIKE： 模糊查询，通常配合通配符 %（代表任意个字符）或 _（代表单个字符）：SELECT * FROM Product WHERE product_name LIKE '%T恤%'; -- 名字里包含“T恤”的
