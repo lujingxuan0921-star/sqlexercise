@@ -162,3 +162,23 @@ INTO TABLE Product
 FIELDS TERMINATED BY ',' 
 lines terminated by '\r\n';
 ('0008', '圆珠笔', '办公用品', 100, NULL,'2009-11-11');
+
+插入数据后查看数据：
+查看前三行数据：SELECT * FROM Product LIMIT 3;
+馋看第四行到第六行数据：SELECT * FROM Product LIMIT 3, 3;（第一个3表示跳过前三行，第二个3表示向后三行）
+
+发现表名错误需要修改：
+RENAME TABLE Poduct to Product;
+
+练习：
+CREATE TABLE Addressbook
+(regist_no INTEGER NOT NULL,
+  name VARCHAR(128) NOT NULL,
+  address VARCHAR(256) NOT NULL,
+  tel_no CHAR(10) ,
+  mail_address CHAR(20) ,
+  PRIMARY KEY (regist_no));
+
+ALTER TABLE Addressbook ADD COLUMN postal_code CHAR(8) NOT NULL;
+
+DROP TABLE Addressbook;
