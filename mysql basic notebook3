@@ -118,3 +118,19 @@ AND ( regist_date = '2009-09-11'
 OR regist_date = '2009-09-20');
 
 AND 运算符两侧的真值都为真时返回真，除此之外都返回假。OR 运算符两侧的真值只要有一个不为假就返回真，只有当其两侧的真值都为假时才返回假。NOT运算符只是单纯的将真转换为假，将假转换为真。
+
+练习：
+SELECT product_name, regist_date
+FROM product
+WHERE regist_date > '2009-04-28';
+
+SELECT product_name, sale_price, purchase_price 
+FROM product 
+WHERE (sale_price - purchase_price) >= 500;
+
+SELECT product_name, product_type, 
+  sale_price * 0.9 - purchase_price AS profit 
+FROM product 
+WHERE (sale_price * 0.9 - purchase_price >= 100) 
+  AND (product_type = '办公用品' 
+    OR product_type = '厨房用具'))；
