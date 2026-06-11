@@ -1,1 +1,57 @@
+1.聚会函数
+COUNT：
+统计总行数：SELECT COUNT(*) FROM Product;
+统计总行数：SELECT COUNT(1) FROM Product;
+统计非空行：SELECT COUNT(purchase_price) FROM Product;
+SELECT COUNT(*) FROM Product WHERE sale_price > 1000;
+SELECT COUNT(DISTINCT product_type) FROM Product;
+SELECT product_type, COUNT(*) AS total_count 
+FROM Product 
+GROUP BY product_type;
 
+SUM：
+SELECT SUM(sale_price) AS total_revenue FROM Product;
+SELECT SUM(sale_price) AS kitchen_total 
+FROM Product 
+WHERE product_type = '厨房用具';
+SELECT SUM(DISTINCT sale_price) FROM Product;
+SELECT SUM(sale_price - purchase_price) AS total_profit FROM Product;
+SELECT product_type, SUM(sale_price) AS type_total 
+FROM Product 
+GROUP BY product_type;
+SELECT IFNULL(SUM(sale_price), 0) AS safe_total FROM Product WHERE product_type = '不存在的分类';
+
+AVG：
+SELECT ROUND(AVG(sale_price), 2) AS beautiful_avg FROM Product;
+SELECT AVG(sale_price) AS kitchen_avg 
+FROM Product 
+WHERE product_type = '厨房用具';
+SELECT product_type, ROUND(AVG(sale_price), 2) AS type_avg 
+FROM Product 
+GROUP BY product_type;
+-- 这样计算时，圆珠笔的 0 就会参与求和，且分母依然是 2
+SELECT AVG(IFNULL(purchase_price, 0)) AS real_avg 
+FROM Product 
+WHERE product_type = '办公用品';
+SELECT IFNULL(ROUND(AVG(sale_price), 2), 0.00) AS safe_avg 
+FROM Product 
+WHERE product_type = '不存在的神秘分类';
+
+MAX/MIN:
+SELECT MAX(sale_price) AS max_price, 
+       MIN(sale_price) AS min_price 
+FROM Product;
+SELECT MAX(sale_price) AS max_cloth, 
+       MIN(sale_price) AS min_cloth 
+FROM Product 
+WHERE product_type = '衣服';
+SELECT product_type, MAX(sale_price) AS top_price 
+FROM Product 
+GROUP BY product_type;
+SELECT MIN(regist_date) AS earliest, MAX(regist_date) AS latest FROM Product;
+SELECT IFNULL(MAX(sale_price), 0.00) AS safe_max FROM Product WHERE product_type = '神秘不存在分类';
+SELECT product_name, sale_price FROM Product 
+WHERE sale_price = (SELECT MAX(sale_price) FROM Product);
+
+DISTINCT:
+SELECT DISTINCT product_type FROM Product;
